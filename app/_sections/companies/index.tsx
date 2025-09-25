@@ -20,9 +20,17 @@ export const companiesFragment = fragmentOn("CompaniesComponent", {
 type Companies = fragmentOn.infer<typeof companiesFragment>;
 
 export function Companies(props: Companies) {
+  const companyCaptions = [
+    "Facebook",
+    "Instagram", 
+    "Google Business",
+    "X (Twitter)",
+    "LinkedIn"
+  ];
+
   return (
     <Section container="full">
-      <h2 className="text-center tracking-tight text-[--dark-text-tertiary] opacity-80">
+      <h2 className="text-xl text-center tracking-tight text-white">
         {props.subtitle}
       </h2>
       <div className="no-scrollbar flex max-w-full justify-center overflow-auto">
@@ -31,18 +39,21 @@ export function Companies(props: Companies) {
         <div
           className={clsx("flex shrink-0 items-center gap-4 px-6 lg:gap-6 lg:px-12", s.scrollbar)}
         >
-          {props.companies.map((company) => (
+          {props.companies.map((company, index) => (
             <figure
               key={company.image?.url ?? company._title}
-              className="flex h-20 items-center px-2 py-3 lg:p-4"
+              className="flex flex-col items-center px-2 py-3 lg:p-4"
             >
               <BaseHubImage
                 alt={company._title}
-                className="w-24 lg:w-32"
-                height={24}
+                className="object-contain"
+                height={48}
                 src={company.image!.url}
-                width={24}
+                width={48}
               />
+              <figcaption className="mt-2 text-sm text-center text-white/80">
+                {companyCaptions[index] || company._title}
+              </figcaption>
             </figure>
           ))}
         </div>
