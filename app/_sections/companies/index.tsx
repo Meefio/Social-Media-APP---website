@@ -37,21 +37,21 @@ export function Companies(props: Companies) {
         <div className="bg-linear-to-r from-surface-primary dark:from-dark-surface-primary pointer-events-none absolute left-0 top-0 h-full w-[30vw] bg-transparent xl:hidden" />
         <div className="bg-linear-to-l from-surface-primary dark:from-dark-surface-primary pointer-events-none absolute right-0 top-0 h-full w-[30vw] bg-transparent xl:hidden" />
         <div
-          className={clsx("flex shrink-0 items-center gap-4 px-6 lg:gap-6 lg:px-12", s.scrollbar)}
+          className={clsx("flex shrink-0 items-center gap-3 px-4 lg:gap-6 lg:px-12", s.scrollbar)}
         >
           {props.companies.map((company, index) => (
             <figure
               key={company.image?.url ?? company._title}
-              className="flex flex-col items-center px-2 py-3 lg:p-4"
+              className="flex flex-col items-center px-1 py-2 lg:p-4"
             >
               <BaseHubImage
                 alt={company._title}
                 className="object-contain"
-                height={48}
+                height={40}
                 src={company.image!.url}
-                width={48}
+                width={40}
               />
-              <figcaption className="mt-2 text-sm text-center text-white/80">
+              <figcaption className="mt-2 text-xs md:text-sm text-center text-white/80">
                 {companyCaptions[index] || company._title}
               </figcaption>
             </figure>
