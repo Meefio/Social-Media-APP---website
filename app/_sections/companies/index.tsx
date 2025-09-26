@@ -30,7 +30,7 @@ export function Companies(props: Companies) {
 
   return (
     <Section container="full">
-      <h2 className="text-xl text-center tracking-tight text-white">
+      <h2 className="text-xl text-center tracking-tight text-gray-900 dark:text-white">
         {props.subtitle}
       </h2>
       <div className="no-scrollbar flex max-w-full justify-center overflow-auto">
@@ -51,7 +51,7 @@ export function Companies(props: Companies) {
                 src={company.image!.url}
                 width={40}
               />
-              <figcaption className="mt-2 text-xs md:text-sm text-center text-white/80">
+              <figcaption className="mt-2 text-xs md:text-sm text-center text-gray-600 dark:text-white/80">
                 {companyCaptions[index] || company._title}
               </figcaption>
             </figure>
