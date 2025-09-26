@@ -1,8 +1,5 @@
 import { Heading } from "../../common/heading"
 import { Section } from "../../common/section-wrapper"
-import { SearchContent as Search } from "../../common/search"
-import { SearchHitsProvider } from "../../context/search-hits-context"
-import { type AvatarFragment, avatarFragment } from "../../lib/basehub/fragments"
 
 import { BlogpostCard, blogpostCardFragment } from "./_components/blogpost-card"
 import { PageView } from "../../components/page-view"
@@ -33,6 +30,7 @@ export const generateMetadata = async (): Promise<Metadata | undefined> => {
     }
   } catch (error) {
     console.error("Error fetching blog metadata:", error)
+    // Return default metadata if BaseHub is not configured
     return {
       title: "Blog",
       description: "Read our latest blog posts",
@@ -43,23 +41,8 @@ export const generateMetadata = async (): Promise<Metadata | undefined> => {
 export default async function BlogPage() {
   try {
     const {
-      _componentInstances: { blogPost },
       site: { blog, generalEvents },
-      collections: { authors },
     } = await basehub().query({
-      _componentInstances: {
-        blogPost: {
-          _searchKey: true,
-        },
-      },
-      collections: {
-        authors: {
-          items: {
-            _id: true,
-            image: avatarFragment,
-          },
-        },
-      },
       site: {
         generalEvents: { ingestKey: true },
         blog: {
@@ -104,15 +87,6 @@ export default async function BlogPage() {
           <Heading align="left">
             <h2>{blog.mainTitle}</h2>
           </Heading>
-          <SearchHitsProvider
-            authorsAvatars={authors.items.reduce((acc: Record<string, AvatarFragment>, author) => {
-              acc[author._id] = author.image
-
-              return acc
-            }, {})}
-          >
-            <Search _searchKey={blogPost._searchKey} />
-          </SearchHitsProvider>
           {blog.featuredPosts?.slice(0, 3).map((post) => (
             <BlogpostCard key={post._id} type="card" {...post} />
           ))}
@@ -132,6 +106,12 @@ export default async function BlogPage() {
   } catch (error) {
     console.error("Error fetching blog data:", error)
 
+    // Check if it's a BaseHub token issue
+    const isTokenError = error instanceof Error && 
+      (error.message.includes("Internal Server Error") || 
+       error.message.includes("Request ID") ||
+       error.message.includes("An unknown error occurred"))
+
     return (
       <Section className="gap-16">
         <div className="grid grid-cols-1 gap-5 self-stretch md:grid-cols-2">
@@ -141,11 +121,28 @@ export default async function BlogPage() {
         </div>
         <div className="w-full space-y-3">
           <Heading align="left">
-            <h3 className="!text-xl lg:!text-2xl">Unable to load blog posts</h3>
+            <h3 className="!text-xl lg:!text-2xl">
+              {isTokenError ? "BaseHub Configuration Required" : "Unable to load blog posts"}
+            </h3>
           </Heading>
-          <p className="text-[--text-secondary] dark:text-[--dark-text-secondary]">
-            We're experiencing technical difficulties. Please try again later.
-          </p>
+          <div className="text-[--text-secondary] dark:text-[--dark-text-secondary] space-y-3">
+            {isTokenError ? (
+              <>
+                <p>To use this blog, you need to configure your BaseHub token:</p>
+                <ol className="list-decimal list-inside space-y-2 ml-4">
+                  <li>Create a <code className="bg-[--surface-secondary] dark:bg-[--dark-surface-secondary] px-2 py-1 rounded text-sm">.env.local</code> file in your project root</li>
+                  <li>Add your BaseHub token: <code className="bg-[--surface-secondary] dark:bg-[--dark-surface-secondary] px-2 py-1 rounded text-sm">BASEHUB_TOKEN="your-token-here"</code></li>
+                  <li>Get your token from your BaseHub repository Settings → API</li>
+                  <li>Restart your development server</li>
+                </ol>
+                <p className="text-sm text-[--text-tertiary] dark:text-[--dark-text-tertiary]">
+                  For more details, see the README.md file.
+                </p>
+              </>
+            ) : (
+              <p>We're experiencing technical difficulties. Please try again later.</p>
+            )}
+          </div>
         </div>
       </Section>
     )
