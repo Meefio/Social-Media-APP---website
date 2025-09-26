@@ -38,7 +38,7 @@ const SEMANTIC_GRAYSCALE_MAPPING = {
   // Dark Mode
   "dark-text-primary": "50",
   "dark-text-secondary": "400",
-  "dark-text-tertiary": "500",
+  "dark-text-tertiary": "700",
   "dark-surface-primary": "950",
   "dark-surface-secondary": "900",
   "dark-surface-tertiary": "800",
@@ -116,6 +116,10 @@ export function BaseHubThemeProvider({ theme }: { theme: BaseHubTheme }) {
   // Status Colors (hardcoded)
   css.push(`--error: #ff453a;`);
   css.push(`--success: #14c9a2;`);
+  
+  // Override dark-text-tertiary with custom color
+  css.push(`--dark-text-tertiary: #dfdfdf;`);
+  css.push(`--dark-text-tertiary-rgb: 223, 223, 223;`);
 
   // Text on Accent (with fallbacks)
   css.push(`--text-on-accent-primary: var(--text-on-accent, var(--grayscale-50));`);

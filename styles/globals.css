@@ -144,7 +144,7 @@ body {
   /* Dark Mode Semantic Colors */
   --dark-text-primary: var(--grayscale-50);
   --dark-text-secondary: var(--grayscale-200);
-  --dark-text-tertiary: var(--grayscale-300);
+  --dark-text-tertiary: var(--grayscale-700);
 
   --dark-surface-primary: var(--grayscale-950);
   --dark-surface-secondary: var(--grayscale-900);
@@ -174,7 +174,7 @@ body {
 
   --dark-text-primary-rgb: var(--grayscale-rgb-50);
   --dark-text-secondary-rgb: var(--grayscale-rgb-200);
-  --dark-text-tertiary-rgb: var(--grayscale-rgb-300);
+  --dark-text-tertiary-rgb: var(--grayscale-rgb-700);
 
   --dark-surface-primary-rgb: var(--grayscale-rgb-950);
   --dark-surface-secondary-rgb: var(--grayscale-rgb-900);
